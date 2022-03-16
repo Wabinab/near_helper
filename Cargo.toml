@@ -2,6 +2,8 @@
 name = "near-helper"
 version = "0.1.0"
 edition = "2018"
+description = "A helper for NEAR-SDK-RS 4.0 pre-release"
+license = "Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
