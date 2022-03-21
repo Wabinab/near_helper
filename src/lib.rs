@@ -5,8 +5,6 @@
 
 use near_sdk::{env, require, utils};
 
-const ONE_NEAR: u128 = 1_000_000_000_000_000_000_000_000;
-
 /// Checks for successful promise. 
 #[deprecated(
   since="0.2.0", 
@@ -185,6 +183,7 @@ pub fn near_to_yoctonear(amount: f64) -> u128 {
 #[cfg(test)]
 mod tests {
     use super::*;
+    const ONE_NEAR: u128 = 1_000_000_000_000_000_000_000_000;
 
     #[test]
     fn test_yoctonear_to_near_conversion_correct_below_decimals() {
