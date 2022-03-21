@@ -79,7 +79,6 @@ pub fn yoctonear_to_near(amount: u128) -> f64 {
     let amount_bytes = amount_str.as_bytes();
 
     let amount_len = amount_bytes.len();
-    eprintln!("{}", amount_bytes[4] as char);
 
     let mut num: String = "".to_owned();
     if amount_len <= 24 {  // below 1 NEAR, which has len = 25
@@ -108,7 +107,6 @@ pub fn yoctonear_to_near(amount: u128) -> f64 {
       }
     }
 
-    eprintln!("num: {}", num);
 
     num.parse().unwrap()
 }
@@ -164,7 +162,6 @@ pub fn near_to_yoctonear(amount: f64) -> u128 {
 
       // right of decimal
       let remnant_num = amount_len - count;
-      eprintln!("remnant num: {}", remnant_num);
       let zeros_to_add = 25 - remnant_num;
 
       for i in count+1..count+remnant_num {

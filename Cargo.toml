@@ -1,6 +1,6 @@
 [package]
 name = "near-helper"
-version = "0.2.0"
+version = "0.2.1"
 edition = "2018"
 description = "A helper for NEAR-SDK-RS 4.0 pre-release"
 license = "Apache-2.0"
