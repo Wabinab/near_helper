@@ -177,6 +177,49 @@ pub fn near_to_yoctonear(amount: f64) -> u128 {
 }
 
 
+
+/// Return the scientific notation of a given value, 
+/// based on the digit you want to keep. This offers 
+/// you to calculate using the number of kept digits,
+/// hence simplifying calculations. 
+/// 
+/// This is useful if you want to keep calculation simple. 
+/// (UNDER TESTING CURRENTLY FOR PROVE.) Instead of 
+/// calculating with u128, use u32. 
+/// 
+/// CAVEAT: You lose accuracy depending on how much
+/// digit you choose to keep. All digits that you
+/// don't keep will be replaced by "0". Example: 
+/// if you keep 3 digits, and your value is 1.234x10^25, 
+/// it would return (123, 23) as it now moves to 123x10^23
+/// equivalent to 1.23x10^25. 
+/// 
+/// ```
+/// let amount: u128 = 2_913_464_000_000_000_000;
+/// 
+/// assert_eq!(
+///   near_helper::as_scientific_notation(amount, 3),
+///   (291u32, 16u8)
+/// );
+/// ```
+pub fn as_scientific_notation(
+  amount: u128,
+  keep_digit: usize
+) -> (u32, u8) {
+    let amount: String = amount.to_string();
+    let amount_bytes = amount.as_bytes();
+    let amount_len = amount_bytes.len();
+
+    let mut return_digit: String = "".to_owned();
+    for i in 0..keep_digit {
+      return_digit.push(amount_bytes[i] as char);
+    }
+
+    let power_of: u8 = amount_len as u8 - keep_digit as u8;
+    (return_digit.parse().unwrap(), power_of)
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
