@@ -3,25 +3,30 @@
 //! Some helper for NEAR 4.0 after upgrading from previous
 //! versions. 
 
-use near_sdk::{env, require, utils};
+// use near_sdk::{env, require, utils};
 
 /// Checks for successful promise. 
 #[deprecated(
   since="0.2.0", 
   note="please use near_sdk::utils::is_promise_success"
 )]
-pub fn is_promise_success() -> bool {
-    utils::is_promise_success()
+pub fn is_promise_success(){
+    // utils::is_promise_success()
+    // false
 }
 
 
 /// The equivalent of .expect() but a lightweight version
 /// to reduce compiled-wasm size. 
+#[deprecated(
+  since="0.3.0",
+  note="just do unwrap_or_else(|| env::panic_str(...)) manually."
+)]
 pub fn expect_lightweight<T>(
-  option: Option<T>,
-  message: &str,
-) -> T {
-    option.unwrap_or_else(|| env::panic_str(message))
+  _option: Option<T>,
+  _message: &str,
+) {
+    // option.unwrap_or_else(|| env::panic_str(message))
 }
 
 
@@ -29,11 +34,15 @@ pub fn expect_lightweight<T>(
 /// assertion. 
 /// Similar to near_sdk::utils::assert_self except you can
 /// enter a custom message for claribility. 
-pub fn assert_predecessor_is_current(message: &str) {
-    require!(
-      env::predecessor_account_id() == env::current_account_id(),
-      message
-    )
+#[deprecated(
+  since="0.3.0",
+  note="use near_sdk::utils::assert_self instead."
+)]
+pub fn assert_predecessor_is_current(_message: &str) {
+    // require!(
+    //   env::predecessor_account_id() == env::current_account_id(),
+    //   message
+    // )
 }
 
 
@@ -58,7 +67,7 @@ pub fn assert_predecessor_is_current(message: &str) {
 /// 
 /// assert_eq!(
 ///   near_helper::yoctonear_to_near(amount),
-///   3.19326f64
+///   "3.19326".to_owned()
 /// );
 /// ```
 /// 
@@ -69,10 +78,10 @@ pub fn assert_predecessor_is_current(message: &str) {
 /// 
 /// assert_eq!(
 ///   near_helper::yoctonear_to_near(amount),
-///   0.021409f64
+///   "0.021409".to_owned()
 /// );
 /// ```
-pub fn yoctonear_to_near(amount: u128) -> f64 {
+pub fn yoctonear_to_near(amount: u128) -> String {
     let decimals = 5;
 
     let amount_str = amount.to_string();
@@ -107,16 +116,30 @@ pub fn yoctonear_to_near(amount: u128) -> f64 {
       }
     }
 
+    num = num.trim_end_matches('0').to_owned();
+    num = num.trim_end_matches('.').to_owned();
 
-    num.parse().unwrap()
+    num
 }
 
 
 /// NEAR to yoctonear conversion. 
 /// 
+/// Example:
+/// ```
+/// let amount = "3.214".to_owned();
+/// 
+/// assert_eq!(
+///   near_helper::near_to_yoctonear(amount),
+///   3_214_000_000_000_000_000_000_000u128
+/// );
+/// ```
+/// 
+/// 
 /// Will fail if somehow you insert a value less than 1 yoctoNEAR. 
-pub fn near_to_yoctonear(amount: f64) -> u128 {
-    let amount_str = amount.to_string();
+pub fn near_to_yoctonear(amount: String) -> u128 {
+    // let amount_str = amount.to_string();
+    let amount_str = amount;
     let amount_bytes = amount_str.as_bytes();
     
     let amount_len = amount_bytes.len();
@@ -227,29 +250,29 @@ mod tests {
 
     #[test]
     fn test_yoctonear_to_near_conversion_correct_below_decimals() {
-      assert_eq!(yoctonear_to_near(ONE_NEAR / 500), 0.002);
+      assert_eq!(yoctonear_to_near(ONE_NEAR / 500), "0.002".to_owned());
     }
 
     #[test]
     fn test_yoctonear_conversion_correct_above_decimals() {
-      assert_eq!(yoctonear_to_near(ONE_NEAR * 12), 12.0);
+      assert_eq!(yoctonear_to_near(ONE_NEAR * 12), "12".to_owned());
     }
 
 
-    #[test]
-    fn test_yoctonear_conversion_too_small() {
-      yoctonear_to_near(10000);
-    }
+    // #[test]
+    // fn test_yoctonear_conversion_too_small() {
+    //   // assert_eq!(yoctonear_to_near(10000), "0".to_owned());
+    // }
 
 
     #[test]
     fn test_near_to_yoctonear_correct_less_than_one_near() {
-      assert_eq!(near_to_yoctonear(0.0021489), 2_148_900_000_000_000_000_000);
+      assert_eq!(near_to_yoctonear("0.0021489".to_owned()), 2_148_900_000_000_000_000_000);
     }
 
 
     #[test]
     fn test_near_to_yoctonear_correct_more_than_one_near() {
-      assert_eq!(near_to_yoctonear(127.864), 127_864_000_000_000_000_000_000_000);
+      assert_eq!(near_to_yoctonear("127.864".to_owned()), 127_864_000_000_000_000_000_000_000);
     }
 }

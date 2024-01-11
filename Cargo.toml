@@ -1,18 +1,18 @@
 [package]
 name = "near-helper"
-version = "0.3.0"
-edition = "2018"
-description = "A helper for NEAR-SDK-RS 4.0 pre-release, and other functions."
+version = "0.4.0"
+edition = "2021"
+description = "A helper for converting near to yoctonear, and vice versa."
 license = "Apache-2.0"
 repository = "https://github.com/Wabinab/near_helper"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-near-sdk = "=4.0.0-pre.4"
+# near-sdk = "=4.0.0-pre.4"
 
 [lib]
-crate-type = ["cdylib", "rlib"]
+# crate-type = ["cdylib", "rlib"]
 
 [profile.release]
 codegen-units = 1
