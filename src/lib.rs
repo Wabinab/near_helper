@@ -99,7 +99,9 @@ pub fn yoctonear_to_near(amount: u128) -> String {
       }
 
       for i in 0..decimals {
-        num.push(amount_bytes[i] as char)
+        if i < amount_len {
+          num.push(amount_bytes[i] as char)
+        }
       }
 
     } else {  // above 1 NEAR
@@ -138,6 +140,7 @@ pub fn yoctonear_to_near(amount: u128) -> String {
 /// 
 /// Will fail if somehow you insert a value less than 1 yoctoNEAR. 
 pub fn near_to_yoctonear(amount: String) -> u128 {
+    if amount == "0" { return 0; }
     // let amount_str = amount.to_string();
     let amount_str = amount;
     let amount_bytes = amount_str.as_bytes();
@@ -263,6 +266,16 @@ mod tests {
     // fn test_yoctonear_conversion_too_small() {
     //   // assert_eq!(yoctonear_to_near(10000), "0".to_owned());
     // }
+
+    #[test]
+    fn test_yoctonear_zero_conversion_success() {
+      assert_eq!(yoctonear_to_near(0), "0".to_owned());
+    }
+
+    #[test]
+    fn test_near_zero_conversion_success() {
+      assert_eq!(near_to_yoctonear("0".to_owned()), 0);
+    }
 
 
     #[test]
