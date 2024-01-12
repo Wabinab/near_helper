@@ -4,6 +4,11 @@
 //! versions. 
 
 // use near_sdk::{env, require, utils};
+use std::collections::HashMap;
+
+pub mod timestamp;
+
+pub use crate::timestamp::*;
 
 /// Checks for successful promise. 
 #[deprecated(
@@ -288,4 +293,76 @@ mod tests {
     fn test_near_to_yoctonear_correct_more_than_one_near() {
       assert_eq!(near_to_yoctonear("127.864".to_owned()), 127_864_000_000_000_000_000_000_000);
     }
+
+    // =======================================
+    // Chrono
+    fn datetime_comparer(datetime: HashMap<&'static str, String>, 
+      year: &str, month: &str, day: &str, hour: &str, mins: &str, 
+      secs: &str
+    ) {
+      println!("{:?}", datetime);
+      assert_eq!(datetime.get("year").unwrap().clone(), year.to_owned(), "year wrong.");
+      assert_eq!(datetime.get("month").unwrap().clone(), month.to_owned(), "month wrong.");
+      assert_eq!(datetime.get("day").unwrap().clone(), day.to_owned(), "day wrong.");
+      assert_eq!(datetime.get("hour").unwrap().clone(), hour.to_owned(), "hour wrong.");
+      assert_eq!(datetime.get("min").unwrap().clone(), mins.to_owned(), "min wrong.");
+      assert_eq!(datetime.get("sec").unwrap().clone(), secs.to_owned(), "sec wrong.");
+    }
+
+    #[test]
+    fn test_datetime_1() {
+      datetime_comparer(
+        timestamp_millis_to_datetime(388453887000),
+        "1982", "4", "23", "23", "51", "27"
+      );
+    }
+
+    #[test]
+    fn test_datetime_2() {
+      datetime_comparer(
+        timestamp_millis_to_datetime(0),
+        "1970", "1", "1", "0", "0", "0"
+      );
+    }
+
+    #[test]
+    fn test_datetime_3() {
+      datetime_comparer(
+        timestamp_millis_to_datetime(1704067202000),
+        "2024", "1", "1", "0", "0", "2"
+      );
+    }
+
+    #[test]
+    fn test_datetime_4_endtime() {
+      datetime_comparer(
+        timestamp_millis_to_datetime(1388534399000),
+        "2013", "12", "31", "23", "59", "59"
+      );
+    }
+
+    #[test]
+    fn test_datetime_5_leapfeb() {
+      datetime_comparer(
+        timestamp_millis_to_datetime(1709208000000),
+        "2024", "2", "29", "12", "0", "0"
+      );
+    }
+
+    #[test]
+    fn test_datetime_6() {
+      datetime_comparer(
+        timestamp_millis_to_datetime(1435649522000),
+        "2015", "6", "30", "7", "32", "2"
+      );
+    }
+
+    #[test]
+    fn test_datetime_7() {
+      datetime_comparer(
+        timestamp_millis_to_datetime(1409265002000),
+        "2014", "8", "28", "22", "30", "2"
+      );
+    }
+
 }

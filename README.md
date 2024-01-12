@@ -1,5 +1,8 @@
 # NEAR Helper
 
+### Version 0.5.0
+We added a new function to convert `env::block_timestamp_millis()` to datetime. **Note this function is experimental, one tried to test some extreme cases, and wasn't sure if anything isn't yet covered, so if you come up with an error, remember to go to [github](https://github.com/Wabinab/near_helper/issues) and file an issue!**
+
 ### Edit: 11 Jan 2024
 Since dependence on near-sdk makes this library really difficult to use, we're gonna remove all functions that depends on that library, and remove that library. That leaves only conversion of near to yoctonear useful. 
 

@@ -1,6 +1,6 @@
 [package]
 name = "near-helper"
-version = "0.4.1"
+version = "0.5.0"
 edition = "2021"
 description = "A helper for converting near to yoctonear, and vice versa."
 license = "Apache-2.0"
